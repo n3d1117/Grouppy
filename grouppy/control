@@ -1,0 +1,9 @@
+Package: it.ned.grouppy
+Name: grouppy
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: ned
+Author: ned
+Section: Tweaks
