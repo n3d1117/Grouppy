@@ -1,5 +1,8 @@
 #import <Security/Security.h>
 
+// Credits: Damien DeVille
+// https://github.com/ddeville/core-data-ipc/blob/master/Shared/LLConstants.m
+
 void* (SecTaskCopyValueForEntitlement)(void* task, CFStringRef entitlement, CFErrorRef  _Nullable *error);
 void* (SecTaskCreateFromSelf)(CFAllocatorRef allocator);
 
