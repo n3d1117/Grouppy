@@ -1,2 +1,6 @@
 .DS_Store
 grouppy/.theos
+/insert_dylib
+/CydiaSubstrate.framework
+/grouppy.dylib
+/grouppy/packages

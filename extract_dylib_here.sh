@@ -1,7 +1,8 @@
 #!/bin/bash
 
+rm -f grouppy.dylib
 cd grouppy
-rm -r packages/*
+rm -rf packages/*
 make package
 mkdir workdir
 dpkg-deb -R packages/*.deb workdir
