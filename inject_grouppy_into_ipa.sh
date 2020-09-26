@@ -39,7 +39,7 @@ main_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' tmp/Payload
 # Copy substrate and dylib to path
 cd tmp/Payload/*.app/
 mkdir -p Frameworks
-cp -r ../../../CydiaSubstrate.framework Frameworks
+cp -rn ../../../CydiaSubstrate.framework Frameworks
 cp ../../../grouppy.dylib Frameworks
 # Add rpath
 install_name_tool -add_rpath "@executable_path/Frameworks" "$main_binary"
@@ -58,7 +58,7 @@ if [ -d PlugIns ]; then
 		plugin_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$plugin"/Info.plist)
 		# Copy substrate and dylib to path
 		mkdir -p "$plugin"/Frameworks
-		cp -r ../../../CydiaSubstrate.framework "$plugin"/Frameworks
+		cp -rn ../../../CydiaSubstrate.framework "$plugin"/Frameworks
 		cp ../../../grouppy.dylib "$plugin"/Frameworks
 		# Add rpath
 		install_name_tool -add_rpath "@executable_path/Frameworks" "$plugin"/"$plugin_binary"

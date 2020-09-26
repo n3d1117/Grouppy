@@ -4,3 +4,4 @@ grouppy/.theos
 /CydiaSubstrate.framework
 /grouppy.dylib
 /grouppy/packages
+*.ipa
