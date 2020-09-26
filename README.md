@@ -23,10 +23,10 @@ install_name_tool -change /Library/Frameworks/CydiaSubstrate.framework/CydiaSubs
 ```
 * Done!
 
-## IPA Files
-If your app contains plugins, you may want to inject Grouppy into them as well, otherwise they won't be able to communicate with the main app because of the different application groups. Another script is included, `inject_grouppy_into_ipa.sh`, to demonstrate injecting Grouppy into all Mach-O binaries of a given `.ipa` file (i.e. app binary and each plugin in the `PlugIns` folder). A new patched `ipa` file will be generated, without overwriting the original one.
+## IPA or .app Files
+If your app contains plugins, you may want to inject Grouppy into them as well, otherwise they won't be able to communicate with the main app because of the different application groups. Another script is included, `inject_grouppy.sh`, to demonstrate injecting Grouppy into all Mach-O binaries of a given `.ipa` file or `.app` folder (i.e. app binary and each plugin in the `PlugIns` folder). NOTE: it will overwrite the original `ipa` file or `.app` folder.
 
-Usage: `./inject_grouppy.sh PATH_TO_IPA_FILE`.
+Usage: `./inject_grouppy.sh PATH_TO_IPA_FILE_OR_APP_FOLDER`.
 
 ## License
 MIT License. See [LICENSE](LICENSE) file for further information.
