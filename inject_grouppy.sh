@@ -49,29 +49,30 @@ SUBSTRATE_PATH="/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate"
 SUBSTRATE_NEW_PATH="@rpath/CydiaSubstrate.framework/CydiaSubstrate"
 
 # Create tmp folder
-mkdir -p tmp
+TMP=$(openssl rand -base64 8)
+mkdir -p $TMP
 
 if [ "$IS_IPA" = true ]; then
 	# Unzip ipa
-	unzip -q "$IPA" -d tmp
+	unzip -q "$IPA" -d $TMP
 else
 	# Move .app to tmp folder
-	cp -r "$IPA" tmp
+	cp -r "$IPA" $TMP
 fi
 
 # Get main binary name, copy substrate and dylib to path
 if [ "$IS_IPA" = true ]; then
-	main_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' tmp/Payload/*.app/Info.plist)
-	mkdir -p tmp/Payload/*.app/Frameworks
-	cp -rn CydiaSubstrate.framework tmp/Payload/*.app/Frameworks
-	cp grouppy.dylib tmp/Payload/*.app/Frameworks
-	cd tmp/Payload/*.app/
+	main_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' $TMP/Payload/*.app/Info.plist)
+	mkdir -p $TMP/Payload/*.app/Frameworks
+	cp -rn CydiaSubstrate.framework $TMP/Payload/*.app/Frameworks
+	cp grouppy.dylib $TMP/Payload/*.app/Frameworks
+	cd $TMP/Payload/*.app/
 else
-	main_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' tmp/*.app/Info.plist)
-	mkdir -p tmp/*.app/Frameworks
-	cp -rn CydiaSubstrate.framework tmp/*.app/Frameworks
-	cp grouppy.dylib tmp/*.app/Frameworks
-	cd tmp/*.app/
+	main_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' $TMP/*.app/Info.plist)
+	mkdir -p $TMP/*.app/Frameworks
+	cp -rn CydiaSubstrate.framework $TMP/*.app/Frameworks
+	cp grouppy.dylib $TMP/*.app/Frameworks
+	cd $TMP/*.app/
 fi
 # Add rpath
 install_name_tool -add_rpath "@executable_path/Frameworks" "$main_binary"
@@ -126,4 +127,4 @@ else
 	cd .. && mv *.app $IPA_FULLPATH
 fi
 # Cleanup
-cd .. && rm -rf tmp
+cd .. && rm -rf $TMP
