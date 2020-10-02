@@ -58,9 +58,6 @@ TMP=/tmp/$(openssl rand -base64 8)
 mkdir -p $TMP
   # Unzip ipa
   unzip -q "$IPA" -d $TMP
-else
-  INPLACE_EDIT=1
-  TMP=$IPA_FULLPATH
 fi
 
 # Get main binary name, copy substrate and dylib to path
