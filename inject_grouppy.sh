@@ -54,8 +54,8 @@ SUBSTRATE_NEW_PATH="@rpath/CydiaSubstrate.framework/CydiaSubstrate"
 
 if [ "$IS_IPA" = true ]; then
   # Create tmp folder
-TMP=/tmp/$(openssl rand -base64 8)
-mkdir -p $TMP
+  TMP=/tmp/$(openssl rand -base64 8)
+  mkdir -p $TMP
   # Unzip ipa
   unzip -q "$IPA" -d $TMP
 fi
@@ -79,11 +79,8 @@ install_name_tool -add_rpath "@executable_path/Frameworks" "$main_binary"
 # Change CydiaSubstrate path
 install_name_tool -change "$SUBSTRATE_PATH" "$SUBSTRATE_NEW_PATH" Frameworks/grouppy.dylib
 # Inject dylib
-if [ "$IS_IPA" = true ]; then
-  $CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$main_binary"
-else
-  $CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$main_binary"
-fi
+$CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$main_binary"
+
 if [[ $? != 0 ]]; then
   echo "Failed to inject dylib into $main_binary"
   exit 1
@@ -95,23 +92,15 @@ if [ -d PlugIns ]; then
     plugin_binary=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$plugin"/Info.plist)
     # Copy substrate and dylib to path
     mkdir -p "$plugin"/Frameworks
-    if [ "$IS_IPA" = true ]; then
-      cp -rn $CURRENT_DIR/CydiaSubstrate.framework "$plugin"/Frameworks
-      cp $CURRENT_DIR/grouppy.dylib "$plugin"/Frameworks
-    else
-      cp -rn $CURRENT_DIR/CydiaSubstrate.framework "$plugin"/Frameworks
-      cp $CURRENT_DIR/grouppy.dylib "$plugin"/Frameworks
-    fi
+
+    cp -rn $CURRENT_DIR/CydiaSubstrate.framework "$plugin"/Frameworks
+    cp $CURRENT_DIR/grouppy.dylib "$plugin"/Frameworks
     # Add rpath
     install_name_tool -add_rpath "@executable_path/Frameworks" "$plugin"/"$plugin_binary"
     # Change path
     install_name_tool -change "$SUBSTRATE_PATH" "$SUBSTRATE_NEW_PATH" "$plugin"/Frameworks/grouppy.dylib
     # Inject dylib
-    if [ "$IS_IPA" = true ]; then
-      $CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$plugin"/"$plugin_binary"
-    else
-      $CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$plugin"/"$plugin_binary"
-    fi
+    $CURRENT_DIR/insert_dylib --inplace --all-yes "@rpath/grouppy.dylib" "$plugin"/"$plugin_binary"
     if [[ $? != 0 ]]; then
       echo "Failed to inject dylib into $plugin_binary"
       exit 1
